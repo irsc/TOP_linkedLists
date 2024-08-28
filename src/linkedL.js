@@ -46,11 +46,19 @@ export class LinkedList{
     }
     //at(index) returns the node at the given index
     at(index){
-        let node;
-
-        return node;
+        let node = this.getHead();
+        if(index < this.getSize()){
+            for (let i = 0; i < index; i++) {
+                node = node.nextNode;
+            }
+            return node;
+        }else{
+            return null;
+        }
     }
     //pop removes the last element from the list
+    /* 
+    //pop function using recursion, although more verbose that version using at(index)
     pop(node = null){
         if(node == null){
             node = this.getHead();
@@ -65,14 +73,35 @@ export class LinkedList{
             }
         }
         return this.pop(node.nextNode);
+    } */
+
+    pop(){
+        if(this.getSize() == 1){
+            this.size = 0;
+            return this.head = null;
+        }else{
+            let node = this.at(this.getSize()-2);
+            this.size--;
+            return node.nextNode = null;
+        }
     }
     //contains(value) returns true if the passed in value is in the list and otherwise returns false.
     contains(value){
-
+        for (let index = 0; index < this.getSize(); index++) {
+            if(this.at(index).value == value){
+                return true;
+            }
+        }
+        return false;
     }
     //find(value) returns the index of the node containing value, or null if not found.
     find(value){
-
+        for (let index = 0; index < this.getSize(); index++) {
+            if(this.at(index).value == value){
+                return index;
+            }
+        }
+        return null;
     }
     //toString represents your LinkedList objects as strings, so you can print them out and preview them in the console. The format should be: ( value ) -> ( value ) -> ( value ) -> null
     toString(node = null){
@@ -89,12 +118,41 @@ export class LinkedList{
     }
 
     //insertAt(value, index) that inserts a new node with the provided value at the given index.
-    inserAt(value, index){
-
+    insertAt(value, index){
+        if(index == 0){
+            return this.prepend(value);
+        }else if(index < this.getSize()){
+            let nodeAtIndex =  this.at(index);
+            let nodeBeforeIndex = this.at(index-1);
+            let newNode = new Node(value, nodeAtIndex);
+            nodeBeforeIndex.nextNode = newNode;
+            this.size++;
+        }else{
+            return null;
+        }
+        
     }
     //removeAt(index) that removes the node at the given index.
     removeAt(index){
-
+        if(index == this.getSize()-1){
+            return this.pop();
+        }else if(index == 0){
+            let nodeAtIndex =  this.at(index);
+            let nodeAfterIndex =  this.at(index+1);
+            nodeAtIndex = null;
+            this.head = nodeAfterIndex;
+            this.size--;
+        }else if(index < this.getSize()){
+            let nodeAtIndex =  this.at(index);
+            let nodeAfterIndex =  this.at(index+1);
+            let nodeBeforeIndex = this.at(index-1);
+            nodeAtIndex = null;
+            nodeBeforeIndex.nextNode = nodeAfterIndex;
+            this.size--;
+        }else{
+            return null;
+        }
+        
     }
 }
 
